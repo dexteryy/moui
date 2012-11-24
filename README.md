@@ -24,7 +24,7 @@ title: Moui
 
 * [moui/stick](https://github.com/dexteryy/moui/blob/master/stick.js): 
     * Stick a DOM element to anther from any clock position 
-* `mod/drag`: 
+* `moui/drag`: 
     * Standalone drag & drop library provides HTML5 shim 
     * Refactoring...
 * [moui/danvas](https://github.com/dexteryy/moui/blob/master/danvas.js): 
