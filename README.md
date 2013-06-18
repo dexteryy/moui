@@ -5,7 +5,7 @@ title: Moui
 
 # Moui
 
-> * OO-based UI behavior modules behind CardKit(mobile webapp framework)'s view components
+> * OO-based UI behavior modules behind [CardKit](http://ozjs.org/CardKit/)'s view components
 > * 'mobile first'
 > * Independent of particular appearance and specific business
 > * Use HTML as configurations that is equal to JS API
@@ -33,7 +33,7 @@ title: Moui
 
 ## Examples
 
-CardKit demo app - Comming soon...
+[CardKit demo app](http://ozjs.org/CardKit/refapp)
 
 ## Modules Overview
 
