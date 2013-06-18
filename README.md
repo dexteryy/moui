@@ -5,53 +5,71 @@ title: Moui
 
 # Moui
 
-> * A collection of OzJS UI behavior modules that form a library called "Moui"
-> * Under construction...
+> * OO-based UI behavior modules behind CardKit(mobile webapp framework)'s view components
+> * 'mobile first'
+> * Independent of particular appearance and specific business
+> * Use HTML as configurations that is equal to JS API
 
-## AMD and OzJS
+## Usage
+
+### AMD and OzJS
 
 * Moui can either be viewed as an independent library, or as a part of [OzJS mirco-framework](http://ozjs.org/#framework).
-* It's wrapped as a number of mutually independent [AMD (Asynchronous Module Definition)](https://github.com/amdjs/amdjs-api/wiki/AMD) modules. You should use them with [oz.js](http://ozjs.org/#start) (or require.js or [similar](http://wiki.commonjs.org/wiki/Implementations) for handling dependencies). 
-* If you want to make them available for both other AMD code and traditional code based on global namespace. OzJS provides [a mini define/require implementation](http://ozjs.org/examples/adapter/) to transform AMD module into traditional [module pattern](http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth).
+* It's wrapped as an [AMD (Asynchronous Module Definition)](https://github.com/amdjs/amdjs-api/wiki/AMD) module. You should use it with [oz.js](http://ozjs.org/#start) (or require.js or [similar](http://wiki.commonjs.org/wiki/Implementations) for handling dependencies). 
+* If you want to make it available for both other AMD code and traditional code based on global namespace. OzJS provides [a mini define/require implementation](http://ozjs.org/examples/adapter/) to transform AMD module into traditional [module pattern](http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth).
 * See [http://ozjs.org](http://ozjs.org) for details.
+
+### Get the code
+
+* [Download on Github](https://github.com/dexteryy/moui/)
+* Add to your project as new dependency:
+    * via [istatic](http://ozjs.org/istatic)
+    * via [volo](https://github.com/volojs/volo)
 
 ## Dependencies
 
-* jquery or [DollarJS](https://github.com/dexteryy/DollarJS)
 * [mo](https://github.com/dexteryy/mo)
-
-## Modules Overview
-
-* [moui/stick](https://github.com/dexteryy/moui/blob/master/stick.js): 
-    * Stick a DOM element to anther from any clock position 
-* `moui/drag`: 
-    * Standalone drag & drop library provides HTML5 shim 
-    * Refactoring...
-* [moui/danvas](https://github.com/dexteryy/moui/blob/master/danvas.js): 
-    * Implement canvas API using DOM elements
-* [moui/mention](https://github.com/dexteryy/moui/blob/master/mention.js): 
-* [moui/scrollbar](https://github.com/dexteryy/moui/blob/master/scrollbar.js): 
-* [moui/mapviewer](https://github.com/dexteryy/moui/blob/master/mapviewer.js): 
-* [moui/dialog](https://github.com/dexteryy/moui/blob/master/dialog.js): 
+* [dollar](https://github.com/dexteryy/DollarJS) or other jQuery-compatible library
 
 ## Examples
 
-Under construction...
+CardKit demo app - Comming soon...
 
-## Get the code
+## Modules Overview
 
-* [View/download on Github](https://github.com/dexteryy/moui/blob/master/)
-* Add/update to your project as new dependency:
-    * via [istatic](https://github.com/mockee/istatic.git)
-    * via [volo](https://github.com/volojs/volo)
+* [moui/control](https://github.com/dexteryy/moui/blob/master/control.js): 
+    * Minimal stateful component
+* [moui/picker](https://github.com/dexteryy/moui/blob/master/picker.js): 
+    * Compose of `Control` objects
+* [moui/overlay](https://github.com/dexteryy/moui/blob/master/overlay.js): 
+    * Minimal overlay component
+* [moui/actionview](https://github.com/dexteryy/moui/blob/master/actionview.js): 
+    * Inherit from `Overlay`
+    * Compose of `Picker` objects
+* [moui/modalview](https://github.com/dexteryy/moui/blob/master/modalview.js): 
+    * Inherit from `Overlay`
+* `moui/imageview` (Comming soon)
+    * Inherit from `ModalView`
+* [moui/growl](https://github.com/dexteryy/moui/blob/master/growl.js): 
+    * Inherit from `Overlay`
+* `moui/bubble` (Plan to refactor)
+    * Inherit from `Growl`
+* [moui/ranger](https://github.com/dexteryy/moui/blob/master/ranger.js): 
+    * Minimal range component
+* `moui/slider` (Plan to refactor)
+    * Inherit from `Ranger`
+* [moui/util/stick](https://github.com/dexteryy/moui/blob/master/util/stick.js): 
+    * Stick a DOM element to anther from any clock position 
+
+> * Under construction...
 
 ## API and usage
 
-Under construction...
+Comming soon...
 
 ## More References
 
-See [OzJS References](http://ozjs.org/#ref)
+See [OzJS Project Homepage](http://ozjs.org/)
 
 ## Release History
 

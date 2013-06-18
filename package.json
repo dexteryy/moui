@@ -1,6 +1,6 @@
 {
     "name": "Moui",
-    "description": "A collection of OzJS UI behavior modules that form a library called \"Moui\"",
+    "description": "OO-based UI behavior modules behind CardKit(mobile webapp framework)'s view components",
     "homepage": "https://github.com/dexteryy/moui",
     "author": {
         "name": "dexteryy",
@@ -16,15 +16,15 @@
         "url": "http://www.opensource.org/licenses/mit-license.php"
     }],
     "keywords" : [
+        "cardkit",
+        "mobile",
+        "component",
+        "UI",
         "AMD",
         "oz",
         "ozjs"
     ],
-    "version": "0.5.0",
-    "volo": {
-        "dependencies": {
-        }
-    },
+    "version": "2.0.0",
     "dependencies": {
 
     }
