@@ -21,10 +21,12 @@ title: Moui
 
 ### Get the code
 
-* [Download on Github](https://github.com/dexteryy/moui/)
-* Add to your project as new dependency:
-    * via [istatic](http://ozjs.org/istatic)
-    * via [volo](https://github.com/volojs/volo)
+Add to your project as new dependency
+
+* via [bower](http://bower.io/) - `bower install moui`
+* via [istatic](http://ozjs.org/istatic)
+
+Or [download directly from Github](https://github.com/dexteryy/moui/)
 
 ## Dependencies
 
@@ -37,31 +39,39 @@ title: Moui
 
 ## Modules Overview
 
-* [moui/control](https://github.com/dexteryy/moui/blob/master/control.js): 
-    * Minimal stateful component
-* [moui/picker](https://github.com/dexteryy/moui/blob/master/picker.js): 
-    * Compose of `Control` objects
-* [moui/overlay](https://github.com/dexteryy/moui/blob/master/overlay.js): 
-    * Minimal overlay component
-* [moui/actionview](https://github.com/dexteryy/moui/blob/master/actionview.js): 
-    * Inherit from `Overlay`
-    * Compose of `Picker` objects
-* [moui/modalview](https://github.com/dexteryy/moui/blob/master/modalview.js): 
-    * Inherit from `Overlay`
-* `moui/imageview` (Comming soon)
-    * Inherit from `ModalView`
-* [moui/growl](https://github.com/dexteryy/moui/blob/master/growl.js): 
-    * Inherit from `Overlay`
-* `moui/bubble` (Plan to refactor)
-    * Inherit from `Growl`
-* [moui/ranger](https://github.com/dexteryy/moui/blob/master/ranger.js): 
-    * Minimal range component
-* `moui/slider` (Plan to refactor)
-    * Inherit from `Ranger`
-* [moui/util/stick](https://github.com/dexteryy/moui/blob/master/util/stick.js): 
-    * Stick a DOM element to anther from any clock position 
+#### [moui/control](https://github.com/dexteryy/moui/blob/master/control.js): 
+> * Minimal stateful component
 
-> * Under construction...
+#### [moui/picker](https://github.com/dexteryy/moui/blob/master/picker.js): 
+> * Compose of `Control` objects
+
+#### [moui/overlay](https://github.com/dexteryy/moui/blob/master/overlay.js): 
+> * Minimal overlay component
+
+#### [moui/actionview](https://github.com/dexteryy/moui/blob/master/actionview.js): 
+> * Inherit from `Overlay`
+> * Compose of `Picker` objects
+
+#### [moui/modalview](https://github.com/dexteryy/moui/blob/master/modalview.js): 
+> * Inherit from `Overlay`
+
+#### `moui/imageview` (Comming soon)
+> * Inherit from `ModalView`
+
+#### [moui/growl](https://github.com/dexteryy/moui/blob/master/growl.js): 
+> * Inherit from `Overlay`
+
+#### `moui/bubble` (Plan to refactor)
+> * Inherit from `Growl`
+
+#### [moui/ranger](https://github.com/dexteryy/moui/blob/master/ranger.js): 
+> * Minimal range component
+
+#### `moui/slider` (Plan to refactor)
+> * Inherit from `Ranger`
+
+#### [moui/util/stick](https://github.com/dexteryy/moui/blob/master/util/stick.js): 
+> * Stick a DOM element to anther from any clock position 
 
 ## API and usage
 

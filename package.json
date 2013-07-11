@@ -1,5 +1,5 @@
 {
-    "name": "Moui",
+    "name": "moui",
     "description": "OO-based UI behavior modules behind CardKit(mobile webapp framework)'s view components",
     "homepage": "https://github.com/dexteryy/moui",
     "author": {
@@ -24,7 +24,7 @@
         "oz",
         "ozjs"
     ],
-    "version": "2.0.1",
+    "version": "2.0.2",
     "dependencies": {
 
     }
