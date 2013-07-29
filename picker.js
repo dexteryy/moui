@@ -160,19 +160,24 @@ define('moui/picker', [
             }
         },
 
+        getSelectedData: function() {
+            var list = this.getSelected().map(function(controller){
+                return controller.data();
+            });
+            if (list.length <= 1) {
+                return list[0];
+            }
+            return list;
+        },
+
         val: function(){
-            if (!this._config) {
-                return;
+            var list = this.getSelected().map(function(controller){
+                return controller.val();
+            });
+            if (list.length <= 1) {
+                return list[0];
             }
-            if (this._config.multiselect) {
-                return this._allSelected.map(function(controller){
-                    return controller.val();
-                });
-            } else {
-                if (this._lastSelected) {
-                    return this._lastSelected.val();
-                }
-            }
+            return list;
         },
 
         data: function(){
@@ -205,7 +210,7 @@ define('moui/picker', [
                         change.call(this, 'enable', controller);
                     }
                 }, this);
-                this.event.fire('change', [this]);
+                this.event.fire('change', [this, this._options[0]]);
             }
             this._lastActionTarget = null;
             return this;
@@ -221,7 +226,7 @@ define('moui/picker', [
                     }
                 }, this);
                 this._lastActionTarget = null;
-                this.event.fire('change', [this]);
+                this.event.fire('change', [this, this._options[0]]);
             } else {
                 this.undo();
             }
@@ -241,7 +246,7 @@ define('moui/picker', [
                         change.call(this, 'enable', controller);
                     }
                 }, this);
-                this.event.fire('change', [this]);
+                this.event.fire('change', [this, this._options[0]]);
             }
             this._lastActionTarget = null;
             return this;
