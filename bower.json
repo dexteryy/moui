@@ -1,7 +1,7 @@
 {
     "name": "moui",
     "description": "OO-based UI behavior modules behind CardKit(mobile webapp framework)'s view components",
-    "version": "2.0.4",
+    "version": "2.0.5",
     "dependencies": {
         "dollar": "~1.2.3",
         "mo": "~1.5.2"
