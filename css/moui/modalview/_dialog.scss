@@ -25,16 +25,12 @@
       //padding:10px;
       border-bottom:1px solid $border_color;
       overflow:hidden;
-      @include display-flex(flex);
 
       h1 {
-        display:inline-block;
         font-size:16px;
         text-align:center;
         line-height:$bigbutton_height;
         height:$bigbutton_height;
-        @include flex(1 1 auto);
-        @include order(1);
       }
 
       button.confirm, 
@@ -43,8 +39,7 @@
         font-size:14px;
         line-height:$bigbutton_height;
         height:$bigbutton_height;
-        @include flex(0 1 80px);
-        @include order(0);
+        padding:0 20px;
 
         &:hover {
           background:$highlight_color;
@@ -54,11 +49,12 @@
 
       button.cancel {
         border-right:1px solid $border_color;
+        float:left;
       }
 
       button.confirm {
-        @include order(2);
         border-left:1px solid $border_color;
+        float:right;
       }
 
     }
@@ -84,6 +80,7 @@
   }
 
   &.rendered {
+    display:block;
     @include display-flex(flex);
   }
 
