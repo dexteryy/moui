@@ -1,7 +1,7 @@
 
 .moui-actionview {
-  $moui_space: 50px/2;
-  $myspace: (40px/2);
+  $_morespace: 50px/2;
+  $_space: (40px/2);
   display:none;
   position:fixed;
   top:0;
@@ -21,12 +21,12 @@
     @include transition(transform 0.3s 0.1s, opacity 0.2s 0.1s);
 
     .content {
-      padding:$moui_space 0 $moui_space 0;
+      padding:$_morespace 0 $_morespace 0;
       overflow:hidden;
       position:relative;
 
       & > header {
-        padding:0 $moui_space;
+        padding:0 $_morespace;
 
         h1 {
           padding:0 0 10px 0;
@@ -48,15 +48,15 @@
 
       & > .desc {
         color:#fff;
-        padding:$moui_space;
+        padding:$_morespace;
         font-size:$moui_maintitle_size;
       }
 
       & > article {
         position:absolute;
-        bottom:$moui_bigbtn_h + 2*$myspace + 2*$moui_space + $moui_space;
-        left:$moui_space;
-        right:$moui_space;
+        bottom:$moui_bigbtn_h + 2*$_space + 2*$_morespace + $_morespace;
+        left:$_morespace;
+        right:$_morespace;
         background:#343434;
         border: solid 1px #141414;
         padding:0 18px;
@@ -93,8 +93,8 @@
     background:rgba(13,13,13,0.95);
     @include box-shadow(inset 0px 1px 0px #212121);
     width:100%;
-    height:$moui_bigbtn_h + 2*$myspace;
-    //padding:$myspace 0;
+    height:$moui_bigbtn_h + 2*$_space;
+    //padding:$_space 0;
     overflow:hidden;
     text-align:center;
     @include transform(translateY(100%));
@@ -107,9 +107,9 @@
       height:$moui_bigbtn_h;
       width:auto;
       position:absolute;
-      left:$moui_space;
-      right:$moui_space;
-      top:$myspace;
+      left:$_morespace;
+      right:$_morespace;
+      top:$_space;
       margin:0;
     }
 
@@ -135,12 +135,12 @@
       .confirm {
         display:inline-block;
         left:50%;
-        margin:0 0 0 ($moui_space/4);
+        margin:0 0 0 ($_morespace/4);
       }
 
       .cancel {
         right:50%;
-        margin:0 ($moui_space/4) 0 0;
+        margin:0 ($_morespace/4) 0 0;
       }
 
     }
