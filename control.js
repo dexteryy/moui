@@ -185,7 +185,7 @@ define('moui/control', [
             }
             this.isEnabled = false;
             this._node.removeClass('enabled');
-            this.val(this._config.disbleVal);
+            this.val(this._config.disableVal);
             this.num(0 - this._config.numStep);
             if (this._config.disableLabel) {
                 this.label(this._config.disableLabel);
