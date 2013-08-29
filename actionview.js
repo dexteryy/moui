@@ -38,8 +38,8 @@ define('moui/actionview', [
         default_config = {
             className: 'moui-actionview',
             closeDelay: 500,
-            confirmText: '确认',
-            cancelText: '取消',
+            confirmText: 'OK',
+            cancelText: 'Cancel',
             options: null,
             multiselect: false
         };
@@ -53,10 +53,9 @@ define('moui/actionview', [
         _defaults: _.mix({}, ActionView.prototype._defaults, default_config),
 
         init: function(opt) {
-            this.superClass.init.call(this, opt);
+            this.superMethod('init', [opt]);
             this._wrapper = this._node.find('.wrapper').eq(0);
             this._actionsWrapper = this._content;
-            this._wrapperContent = this._wrapper.find('.content').eq(0);
             this._content = this._wrapper.find('.desc').eq(0);
             this._footer = this._node.find('footer').eq(-1);
             this._confirmBtn = this._footer.find('.confirm');
@@ -68,7 +67,7 @@ define('moui/actionview', [
             if (!opt) {
                 return this;
             }
-            this.superClass.set.call(this, opt);
+            this.superMethod('set', [opt]);
 
             if (opt.options !== undefined) {
                 this._actionsWrapper.empty();
@@ -141,14 +140,14 @@ define('moui/actionview', [
                     self.confirm();
                 });
             }
-            this.superClass.applyOpen.apply(this, arguments);
+            return this.superMethod('applyOpen', arguments);
         },
 
         applyClose: function(){
             if (!this._config.multiselect && this._picker) {
                 this._picker.event.reset();
             }
-            this.superClass.applyClose.apply(this, arguments);
+            return this.superMethod('applyClose', arguments);
         }
 
     });

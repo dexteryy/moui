@@ -24,7 +24,7 @@ define('moui/overlay', [
                 <article></article>\
             </div>',
         LOADING_DOTS = '<span class="loading"><i>.</i><i>.</i><i>.</i></span>',
-        LOADING_DEFAULT = '加载中',
+        LOADING_DEFAULT = 'Loading...',
 
         _mid = 0,
 

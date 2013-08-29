@@ -35,8 +35,8 @@ define('moui/modalview', [
             className: 'moui-modalview',
             iframe: false,
             hideConfirm: false,
-            confirmText: '确认',
-            cancelText: '取消'
+            confirmText: 'OK',
+            cancelText: 'Cancel'
         };
 
 
@@ -49,7 +49,7 @@ define('moui/modalview', [
         _defaults: _.mix({}, ModalView.prototype._defaults, default_config),
 
         init: function(opt) {
-            this.superClass.init.call(this, opt);
+            this.superMethod('init', [opt]);
             this._wrapper = this._node.find('.wrapper').eq(0);
             this._contentWrapper = this._wrapper.find('article').eq(0);
             this._content = this._contentWrapper.find('.content').eq(0);
@@ -63,7 +63,7 @@ define('moui/modalview', [
                 return this;
             }
             var self = this;
-            self.superClass.set.call(self, opt);
+            self.superMethod('set', [opt]);
 
             if (opt.content !== undefined) {
                 self._config.iframe = null;
@@ -91,7 +91,7 @@ define('moui/modalview', [
         },
 
         setContent: function(html){
-            this.superClass.setContent.call(this, html);
+            this.superMethod('setContent', [html]);
             if (html) {
                 this.event.fire('contentchange', [this]);
             }
@@ -148,16 +148,17 @@ define('moui/modalview', [
         },
 
         applyOpen: function(){
-            this.superClass.applyOpen.apply(this, arguments);
+            var re = this.superMethod('applyOpen', arguments);
             if (this._config.iframe) {
                 this._iframeContent.attr('src', this._config.iframe);
             }
+            return re;
         },
 
         applyClose: function(){
             this._clearIframeContent();
             this._contentWrapper[0].scrollTop = 0;
-            this.superClass.applyClose.apply(this, arguments);
+            return this.superMethod('applyClose', arguments);
         }
 
     });

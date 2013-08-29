@@ -23,7 +23,7 @@ define('moui/control', [
             disableVal: 0,
             enableLabel: '',
             disableLabel: '',
-            loadingLabel: '稍等...'
+            loadingLabel: 'Loading...'
         };
 
     function Control(elm, opt){

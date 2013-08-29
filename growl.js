@@ -41,7 +41,7 @@ define('moui/growl', [
 
         set: function(opt) {
             var self = this;
-            self.superClass.set.call(self, opt);
+            self.superMethod('set', [opt]);
 
             if (opt.corner && opt.corner !== self._currentCorner) {
                 if (self._currentCorner) {
@@ -66,7 +66,7 @@ define('moui/growl', [
             if (this._config.expires != -1) {
                 set_expires(this);
             }
-            return this.superClass.applyOpen.apply(this, arguments);
+            return this.superMethod('applyOpen', arguments);
         },
 
         applyClose: function(){

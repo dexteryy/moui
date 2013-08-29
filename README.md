@@ -55,8 +55,8 @@ Or [download directly from Github](https://github.com/dexteryy/moui/)
 #### [moui/modalview](https://github.com/dexteryy/moui/blob/master/modalview.js): 
 > * Inherit from `Overlay`
 
-#### `moui/imageview` (Comming soon)
-> * Inherit from `ModalView`
+#### [moui/imageview](https://github.com/dexteryy/moui/blob/master/imageview.js): 
+> * Inherit from `ActionView`
 
 #### [moui/growl](https://github.com/dexteryy/moui/blob/master/growl.js): 
 > * Inherit from `Overlay`
