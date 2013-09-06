@@ -74,9 +74,15 @@
       height:100%;
       -webkit-overflow-scrolling: touch;
 
+      .max {
+        position:relative;
+      }
+
       img {
-        width:100%;
-        //margin: $moui_nav_h 0 0 0;
+        position:absolute;
+        top:0;
+        left:0;
+        max-width:none;
         opacity:0;
         @include transform(scale(0.4));
         @include transition(transform 0.4s ceaser($easeOutQuad), opacity 0.3s);
@@ -126,7 +132,7 @@
     }
 
     .wrapper > article {
-      overflow-y:auto;
+      overflow:auto;
       
       img {
         opacity:1;

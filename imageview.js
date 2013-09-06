@@ -12,8 +12,9 @@ define('moui/imageview', [
     'dollar',
     'mo/lang',
     'mo/template/string',
+    'moui/util/mousewheel',
     'moui/actionview'
-], function($, _, tpl, actionView) {
+], function($, _, tpl, mousewheel, actionView) {
 
     var NS = 'mouiImageView',
         TPL_VIEW =
@@ -26,7 +27,7 @@ define('moui/imageview', [
                         <span class="btn moreactions"></span>\
                         <h1></h1>\
                     </header>\
-                    <article><img></article>\
+                    <article><div class="max"><img></div></article>\
                     <footer></footer>\
                 </div>\
             </div>',
@@ -35,10 +36,17 @@ define('moui/imageview', [
             className: 'moui-imageview',
             closeDelay: 500,
             url: '',
+            maxScale: 3,
+            minScale: 0.5,
+            scaleStep: 0.05,
+            mousewheel: true,
             actionsText: 'More'
         };
 
-    var ImageView = _.construct(actionView.ActionView);
+    var ImageView = _.construct(actionView.ActionView, function(){
+        this.superConstructor.apply(this, arguments);
+        this.initMousewheel();
+    });
 
     _.mix(ImageView.prototype, {
 
@@ -53,9 +61,52 @@ define('moui/imageview', [
             this._cancelBtn = this._header.find('.cancel').eq(0);
             this._actionsBtn = this._header.find('.moreactions');
             this._imageWrapper = this._node.find('article').eq(0);
+            this._imageMax = this._imageWrapper.find('.max');
             this._image = this._imageWrapper.find('img');
             this._actionsWrapper = this._wrapper.find('.options').eq(0);
             return this;
+        },
+
+        initMousewheel: function(){
+            var self = this,
+                scale_step = self._config.scaleStep,
+                max_scale = self._config.maxScale,
+                min_scale = self._config.minScale;
+            this._imageScale = 1;
+            this.event.on('open', function(){
+                if (self._config.mousewheel) {
+                    mousewheel(self._imageWrapper[0]).on(when_wheel);
+                }
+            }).on('close', function(){
+                if (self._config.mousewheel) {
+                    mousewheel(self._imageWrapper[0]).off(when_wheel);
+                }
+            });
+            function when_wheel(e){
+                e.preventDefault();
+                var deltaY = mousewheel.fix(e)[2],
+                    win_w = self._wrapperWidth,
+                    win_h = self._wrapperHeight,
+                    w = self._imageWidth,
+                    h = self._imageHeight,
+                    r = w / h;
+                w = (self._imageScale + deltaY * scale_step) * w;
+                if (w < self._imageWidth * min_scale 
+                        || w > win_w * max_scale) {
+                    return;
+                }
+                h = w / r;
+                if (h < self._imageHeight * min_scale 
+                        || h > win_h * max_scale) {
+                    return;
+                }
+                self._imageScale = w / self._imageWidth;
+                self._image.css({
+                    left: (win_w * max_scale - w) / 2 + 'px',
+                    top: (win_h * max_scale - h) / 2 + 'px',
+                    width: w + 'px'
+                });
+            }
         },
 
         set: function(opt) {
@@ -96,28 +147,72 @@ define('moui/imageview', [
             this._node.toggleClass('focus-image');
         },
 
+        updateImageSize: function(){
+            var max_scale = this._config.maxScale,
+                win_w = this._wrapper.width(),
+                win_h = this._wrapper.height(),
+                w = this._image[0].width,
+                h = this._image[0].height,
+                size = adapted_size(w, h, win_w, win_h);
+            w = size[0];
+            h = size[1];
+            this._imageMax.css({
+                width: win_w * max_scale + 'px',
+                height: win_h * max_scale + 'px'
+            });
+            this._image.css({ 
+                width: w + 'px',
+                left: (win_w * max_scale - w) / 2 + 'px',
+                top: (win_h * max_scale - h) / 2 + 'px'
+            });
+            this._imageWrapper[0].scrollLeft = (win_w * max_scale - win_w) / 2;
+            this._imageWrapper[0].scrollTop = (win_h * max_scale - win_h) / 2;
+            this._imageWidth = w;
+            this._imageHeight = h;
+            this._wrapperWidth = win_w;
+            this._wrapperHeight = win_h;
+        },
+
         applyOpen: function(){
             var re = this.superMethod('applyOpen', arguments);
-            var h = this._imageWrapper.height();
-            var v = this._image[0].offsetHeight;
-            this._image.css({ 
-                'margin-top': v < h ? (h - v) / 2 + 'px' : 0
-            });
+            this.updateImageSize();
             return re;
         },
 
         applyClose: function(){
-            this._imageWrapper[0].scrollTop = 0;
             return this.superMethod('applyClose', arguments);
         }
 
     });
+
+    function adapted_size(w, h, max_w, max_h){
+        var r = w / h;
+        if (r > 1) {
+            if (w !== max_w) {
+                w = max_w;
+            }
+            h = w / r;
+            if (h > max_h) {
+                h = max_h;
+            }
+        } else {
+            if (h !== max_h) {
+                h = max_h;
+            }
+            w = h * r;
+            if (w > max_w) {
+                w = max_w;
+            }
+        }
+        return [w, h];
+    }
 
     function exports(opt) {
         return new exports.ImageView(opt);
     }
 
     exports.ImageView = ImageView;
+    exports.adaptedSize = adapted_size;
 
     return exports;
 
