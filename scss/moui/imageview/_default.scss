@@ -72,6 +72,7 @@
     & > article {
       position:relative;
       height:100%;
+      overflow: hidden;
       -webkit-overflow-scrolling: touch;
 
       .max {
@@ -118,11 +119,6 @@
 
   &.rendered {
     display:block;
-
-    .wrapper > article {
-      overflow:hidden;
-    }
-
   }
 
   &.active {
@@ -132,7 +128,6 @@
     }
 
     .wrapper > article {
-      overflow:auto;
       
       img {
         opacity:1;

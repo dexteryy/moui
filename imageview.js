@@ -39,13 +39,15 @@ define('moui/imageview', [
             maxScale: 3,
             minScale: 0.5,
             scaleStep: 0.05,
-            mousewheel: true,
+            allowDrag: true,
+            allowWheel: true,
             actionsText: 'More'
         };
 
     var ImageView = _.construct(actionView.ActionView, function(){
         this.superConstructor.apply(this, arguments);
         this.initMousewheel();
+        this.initDrag();
     });
 
     _.mix(ImageView.prototype, {
@@ -74,11 +76,11 @@ define('moui/imageview', [
                 min_scale = self._config.minScale;
             this._imageScale = 1;
             this.event.on('open', function(){
-                if (self._config.mousewheel) {
+                if (self._config.allowWheel) {
                     mousewheel(self._imageWrapper[0]).on(when_wheel);
                 }
             }).on('close', function(){
-                if (self._config.mousewheel) {
+                if (self._config.allowWheel) {
                     mousewheel(self._imageWrapper[0]).off(when_wheel);
                 }
             });
@@ -107,6 +109,31 @@ define('moui/imageview', [
                     width: w + 'px'
                 });
             }
+        },
+
+        initDrag: function(){
+            var x, y, 
+                self = this,
+                box = self._imageWrapper[0];
+            self._image.on('mousedown', function(e){
+                if (!self._config.allowDrag) {
+                    return;
+                }
+                e.preventDefault();
+                x = e.clientX;
+                y = e.clientY;
+                $(document).off('mousemove', when_drag)
+                    .on('mousemove', when_drag)
+                    .once('mouseup', function(){
+                        $(document).off('mousemove', when_drag);
+                    });
+                function when_drag(e){
+                    box.scrollLeft -= e.clientX - x;
+                    box.scrollTop -= e.clientY - y;
+                    x = e.clientX;
+                    y = e.clientY;
+                }
+            });
         },
 
         set: function(opt) {
