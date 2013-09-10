@@ -24,8 +24,8 @@ define('moui/slider', [
             this._hoverArea = node.find('.slider-hover');
             this._selectedArea = node.find('.slider-selected');
 
-            this._step = field.attr('step'),
-            this._max = field.attr('max'),
+            this._step = field.attr('step');
+            this._max = field.attr('max');
             this._min = field.attr('min');
 
             this._stepWidth = this._step * node.width() / (this._max - this._min);
@@ -47,14 +47,17 @@ define('moui/slider', [
             return Math.ceil(offsetX / stepWidth) * step;
         },
 
-        val: function(v) {
-            if (this._field[0]) {
-                var returnValue = this._field.val(v);
-                if (v !== undefined) {
-                    this.event.fire('change');
-                }
-                return returnValue;
+        val: function() {
+            var field = this._field;
+            if (!field[0]) {
+                return;
             }
+            var args = [].slice.call(arguments);
+            var re = field.val.apply(field, args);
+            if (re === field) {
+                this.event.fire('change');
+            }
+            return re;
         },
 
         show: function(v) {

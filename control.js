@@ -15,16 +15,16 @@ define('moui/control', [
 ], function(_, $, event){
 
     var default_config = {
-            field: null,
-            label: null,
-            numField: null,
-            numStep: 1,
-            enableVal: 1,
-            disableVal: 0,
-            enableLabel: '',
-            disableLabel: '',
-            loadingLabel: 'Loading...'
-        };
+        field: null,
+        label: null,
+        numField: null,
+        numStep: 1,
+        enableVal: 1,
+        disableVal: 0,
+        enableLabel: '',
+        disableLabel: '',
+        loadingLabel: 'Loading...'
+    };
 
     function Control(elm, opt){
         this.init(elm, opt);
@@ -48,10 +48,10 @@ define('moui/control', [
             }, this.data(), opt);
             this.setNodes(opt);
             if (this._label[0]) {
-                this._isLabelClose = this._label.isEmpty();
+                this._isLabelClose = is_empty(this._label[0]);
             }
             if (this._numField[0]) {
-                this._isNumFieldClose = this._numField.isEmpty();
+                this._isNumFieldClose = is_empty(this._numField[0]);
             }
             if (opt.enableVal === undefined) {
                 opt.enableVal = this.val();
@@ -105,38 +105,45 @@ define('moui/control', [
             return this;
         },
 
-        val: function(v){
-            if (this._field[0]) {
-                if (this._field[0].nodeName === 'A') {
-                    return this._field.attr('href', v);
-                } else {
-                    return this._field.val(v);
-                }
+        val: function(){
+            var field = this._field;
+            if (!field[0]) {
+                return;
+            }
+            var re, args = [].slice.call(arguments);
+            if (field[0].nodeName === 'A') {
+                args.unshift('href');
+                re = field.attr.apply(field, args);
+                return re === field ? field.attr('href') : re;
+            } else {
+                re = field.val.apply(field, args);
+                return re === field ? field.val() : re;
             }
         },
 
-        label: function(str){
-            if (!this._label[0]) {
+        label: function(){
+            var label = this._label;
+            if (!label[0]) {
                 return;
             }
-            if (this._isLabelClose) {
-                return this._label.val(str);
-            } else {
-                return this._label.html(str);
-            }
+            var args = [].slice.call(arguments),
+                method = this._isLabelClose ? 'val' : 'html',
+                re = label[method].apply(label, args);
+            return re === label ? label[method]() : re;
         },
 
         num: function(n) {
-            if (!this._numField[0]) {
+            var numfield = this._numField;
+            if (!numfield[0]) {
                 return;
             }
-            if (this._isNumFieldClose) {
-                return this._numField
-                    .val(n != null ? (parseFloat(this._numField.val()) + n) : undefined);
-            } else {
-                return this._numField
-                    .html(n != null ? (parseFloat(this._numField.html()) + n) : undefined);
+            var args = [],
+                method = this._isNumFieldClose ? 'val' : 'html';
+            if (n != null) {
+                args.push(parseFloat(numfield[method]()) + n);
             }
+            var re = numfield[method].apply(numfield, args);
+            return re === numfield ? numfield[method]() : re;
         },
 
         data: function(){
@@ -196,6 +203,17 @@ define('moui/control', [
         }
     
     };
+
+    function is_empty(elm){
+        if (!elm.innerHTML) {
+            elm.innerHTML = ' ';
+            if (!elm.innerHTML) {
+                return true;
+            }
+            elm.innerHTML = '';
+        }
+        return false;
+    }
 
     function exports(elm, opt){
         return new exports.Control(elm, opt);

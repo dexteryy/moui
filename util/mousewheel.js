@@ -14,13 +14,13 @@ define([], function(){
 
         on: function(fn){
             for (var i = toBind.length; i;) {
-                exports.bind(this._node, toBind[--i], fn);
+                exports.on(this._node, toBind[--i], fn);
             }
         },
 
         off: function(fn){
             for (var i = toBind.length; i;) {
-                exports.unbind(this._node, toBind[--i], fn);
+                exports.off(this._node, toBind[--i], fn);
             }
         },
 
@@ -30,15 +30,16 @@ define([], function(){
         return new exports.Class(elm, opt);
     }
 
-    exports.bind = function(elm, subject, fn){
+    exports.on = function(elm, subject, fn){
         elm.addEventListener(subject, fn, false);
     };
 
-    exports.unbind = function(elm, subject, fn){
+    exports.off = function(elm, subject, fn){
         elm.removeEventListener(subject, fn, false);
     };
 
     exports.fix = function(orgEvent) {
+        orgEvent = orgEvent.originalEvent || orgEvent;
         var delta = 0,
             deltaX = 0,
             deltaY = 0,

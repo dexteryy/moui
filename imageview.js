@@ -86,13 +86,13 @@ define('moui/imageview', [
             });
             function when_wheel(e){
                 e.preventDefault();
-                var deltaY = mousewheel.fix(e)[2],
+                var delta = mousewheel.fix(e)[0],
                     win_w = self._wrapperWidth,
                     win_h = self._wrapperHeight,
                     w = self._imageWidth,
                     h = self._imageHeight,
                     r = w / h;
-                w = (self._imageScale + deltaY * scale_step) * w;
+                w = (self._imageScale + delta * scale_step) * w;
                 if (w < self._imageWidth * min_scale 
                         || w > win_w * max_scale) {
                     return;
@@ -128,6 +128,7 @@ define('moui/imageview', [
                         $(document).off('mousemove', when_drag);
                     });
                 function when_drag(e){
+                    e.preventDefault();
                     box.scrollLeft -= e.clientX - x;
                     box.scrollTop -= e.clientY - y;
                     x = e.clientX;
