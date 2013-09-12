@@ -223,6 +223,7 @@ define('moui/imageview', [
             if (h > max_h) {
                 h = max_h;
             }
+            w = h * r;
         } else {
             if (h !== max_h) {
                 h = max_h;
@@ -231,6 +232,7 @@ define('moui/imageview', [
             if (w > max_w) {
                 w = max_w;
             }
+            h = w / r;
         }
         return [w, h];
     }
