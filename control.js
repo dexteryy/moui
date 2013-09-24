@@ -65,6 +65,24 @@ define('moui/control', [
             if (opt.disableLabel === undefined) {
                 opt.disableLabel = this.label();
             }
+            this._disableAttrs = {};
+            this._enableAttrs = {};
+            _.each(opt, function(value, name){
+                var k;
+                if (k = /^enableAttr([A-Z]\w*)/.exec(name)) {
+                    k = k[1].toLowerCase();
+                    this._disableAttrs[k] = node.attr(k);
+                    if (!this._enableAttrs[k]) {
+                        this._enableAttrs[k] = value;
+                    }
+                } else if (k = /^disableAttr([A-Z]\w*)/.exec(name)) {
+                    k = k[1].toLowerCase();
+                    this._enableAttrs[k] = node.attr(k);
+                    if (!this._disableAttrs[k]) {
+                        this._disableAttrs[k] = value;
+                    }
+                }
+            }, this);
             this._config = _.config({}, opt, this._defaults);
         },
 
@@ -181,6 +199,9 @@ define('moui/control', [
             if (this._config.enableLabel) {
                 this.label(this._config.enableLabel);
             }
+            _.each(this._enableAttrs, function(value, name){
+                this._node.attr(name, value);
+            }, this);
             this.event.reset('disable')
                 .resolve('enable', [this]);
             return this;
@@ -197,6 +218,9 @@ define('moui/control', [
             if (this._config.disableLabel) {
                 this.label(this._config.disableLabel);
             }
+            _.each(this._disableAttrs, function(value, name){
+                this._node.attr(name, value);
+            }, this);
             this.event.reset('enable')
                 .resolve('disable', [this]);
             return this;
