@@ -96,8 +96,8 @@ define('moui/picker', [
 
         addOption: function(elm){
             elm = $(elm)[0];
-            if (elm[OID]) {
-                return;
+            if (elm[OID] || elm.nodeType !== 1) {
+                return this;
             }
             elm[OID] = ++this._uoid;
             var controller = control(elm, {
