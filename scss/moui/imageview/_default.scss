@@ -106,6 +106,13 @@
 
       }
 
+      .mask {
+        display:none;
+        position:absolute;
+        top:0;
+        left:0;
+      }
+
     }
 
     & > .loading {
@@ -190,6 +197,14 @@
 
     .wrapper > footer {
       @include transform(translateY(100%));
+    }
+
+  }
+
+  &.disable-save {
+
+    .wrapper > article .mask {
+      display:block;
     }
 
   }

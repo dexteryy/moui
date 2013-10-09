@@ -35,7 +35,10 @@ define('moui/imageview', [
                         <h1></h1>\
                     </header>\
                     <article>\
-                        <div class="max"><img></div>\
+                        <div class="max">\
+                            <img>\
+                            <div class="mask"></div>\
+                        </div>\
                     </article>\
                     <div class="loading"></div>\
                     <footer></footer>\
@@ -55,10 +58,11 @@ define('moui/imageview', [
             scaleStep: 0.05,
             allowDrag: true,
             allowWheel: true,
+            allowSave: true,
             loadingContent: 'Loading...',
             cancelText: 'x',
             smallerText: '—',
-            resetText: '1:1',
+            resetText: '1x',
             biggerText: '+',
             nextText: '&#8250;',
             prevText: '&#8249;'
@@ -82,7 +86,8 @@ define('moui/imageview', [
             this._content = this._node.find('footer').eq(-1);
             this._imageWrapper = this._node.find('article').eq(0);
             this._imageMax = this._imageWrapper.find('.max');
-            this._image = this._imageWrapper.find('img');
+            this._imageMask = this._imageMax.find('.mask');
+            this._image = this._imageMax.find('img');
             this._loading = this._node.find('.loading').eq(0);
             return this;
         },
@@ -100,16 +105,23 @@ define('moui/imageview', [
             });
             function when_wheel(e){
                 e.preventDefault();
-                self.zoomImage(mousewheel.fix(e)[0]);
+                var data = mousewheel.fix(e);
+                self.zoomImage(data[2] || data[0] > 0 && 2 || -2);
             }
         },
 
         initDrag: function(){
             var x, y, 
                 self = this,
+                handler = self._config.allowSave 
+                    ? self._image 
+                    : self._imageMask,
                 box = self._imageWrapper[0];
-            self._image.on('mousedown', function(e){
-                if (!self._config.allowDrag) {
+            handler.on('mousedown', function(e){
+                var which = e.button;
+                if (!self._config.allowDrag
+                        || which > 0 && which !== 0
+                        || which < 0 && which !== -1) {
                     return;
                 }
                 e.preventDefault();
@@ -135,6 +147,14 @@ define('moui/imageview', [
                 return this;
             }
             this.superMethod('set', [opt]);
+
+            if (opt.allowSave !== undefined) {
+                if (opt.allowSave) {
+                    this._node.removeClass('disable-save');
+                } else {
+                    this._node.addClass('disable-save');
+                }
+            }
 
             if (opt.content !== undefined) {
                 if (!opt.content) {
@@ -215,11 +235,17 @@ define('moui/imageview', [
                 w = scale * this._imageWidth,
                 h = w / (this._imageWidth / this._imageHeight);
             this._imageScale = scale;
-            this._image.css({
-                left: (this._wrapperWidth * max_scale - w) / 2 + 'px',
-                top: (this._wrapperHeight * max_scale - h) / 2 + 'px',
-                width: w + 'px'
-            });
+            var values = {
+                width: w,
+                left: (this._wrapperWidth * max_scale - w) / 2,
+                top: (this._wrapperHeight * max_scale - h) / 2
+            };
+            this._image.css(values);
+            if (!this._config.allowSave) {
+                this._imageMask.css(_.mix(values, {
+                    height: h
+                }));
+            }
         },
 
         updateImageSize: function(w, h){
@@ -234,8 +260,8 @@ define('moui/imageview', [
                 win_h = this._wrapper.height(),
                 size = adapted_size(w, h, win_w, win_h);
             this._imageMax.css({
-                width: win_w * max_scale + 'px',
-                height: win_h * max_scale + 'px'
+                width: win_w * max_scale,
+                height: win_h * max_scale
             });
             this._imageWidth = size[0];
             this._imageHeight = size[1];
