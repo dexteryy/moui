@@ -26,7 +26,7 @@
       }
 
       .group {
-        margin:24px 0;
+        margin:22px 0;
         display:block;
       }
 
@@ -36,7 +36,7 @@
         float:none;
         height:32px;
         line-height:32px;
-        background:rgba(87,87,87,.8);
+        background:rgba(119, 119, 119, 0.6);
         margin:1px 0;
         font-size:20px;
         font-weight:100;
@@ -44,7 +44,7 @@
         text-align:center;
 
         &:hover {
-          background:rgba(87,87,87,1);
+          background:rgba(119, 119, 119, 1);
         }
 
         &:active {
@@ -53,13 +53,13 @@
 
         &.disabled {
           opacity:0.4;
-          background:rgba(87,87,87,.8);
+          background:rgba(119, 119, 119, 0.8);
         }
 
       }
 
       .cancel {
-        margin-top:17px;
+        margin-top:22px;
       }
 
       .reset {
@@ -68,8 +68,8 @@
 
       .next,
       .prev {
-        height:122px;
-        line-height:122px;
+        height:120px;
+        line-height:120px;
         font-family: Arial;
         font-size:30px;
         font-weight:100;
@@ -136,7 +136,7 @@
       padding: 15px;
       background:#0d0d0d\9;
       filter: alpha(opacity=50)\9;
-      background:rgba(13,13,13,0.5);
+      background:rgba(0, 0, 0, 0.5);
       @include transform(translateY(100%));
       @include transition(transform 0.4s);
     }
@@ -151,7 +151,7 @@
     right:0;
     background:#0d0d0d\9;
     filter: alpha(opacity=95)\9;
-    background:rgba(13,13,13,0.95);
+    background:rgba(0, 0, 0, 0.85);
     opacity:0;
     @include transition(opacity 0.2s);
   }
@@ -163,7 +163,7 @@
   &.active {
 
     .wrapper > header {
-      right:13px;
+      right:14px;
     }
 
     .wrapper > article {
