@@ -29,8 +29,8 @@ define('moui/imageview', [
                             <span class="btn smaller"></span>\
                         </span>\
                         <span class="group pager">\
-                            <span class="btn next"></span>\
                             <span class="btn prev"></span>\
+                            <span class="btn next"></span>\
                         </span>\
                         <h1></h1>\
                     </header>\
