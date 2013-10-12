@@ -198,6 +198,14 @@ define('moui/imageview', [
             this._node.toggleClass('focus-image');
         },
 
+        dragReset: function(w, h){
+            var max_scale = this._config.maxScale;
+            w = w || this._wrapper.width();
+            h = h || this._wrapper.height();
+            this._imageWrapper[0].scrollLeft = (w * max_scale - w) / 2;
+            this._imageWrapper[0].scrollTop = (h * max_scale - h) / 2;
+        },
+
         zoomIn: function(n){
             this.zoomImage((n || 1) * 2.5);
         },
@@ -208,6 +216,7 @@ define('moui/imageview', [
 
         zoomReset: function(){
             this._changeImageScale(1);
+            this.dragReset();
         },
 
         zoomImage: function(delta){
@@ -268,8 +277,7 @@ define('moui/imageview', [
             this._wrapperWidth = win_w;
             this._wrapperHeight = win_h;
             this._changeImageScale(1);
-            this._imageWrapper[0].scrollLeft = (win_w * max_scale - win_w) / 2;
-            this._imageWrapper[0].scrollTop = (win_h * max_scale - win_h) / 2;
+            this.dragReset(win_w, win_h);
             return true;
         },
 
