@@ -12,9 +12,10 @@ define('moui/imageview', [
     'dollar',
     'mo/lang',
     'mo/template/string',
+    'moui/util/supports',
     'moui/util/mousewheel',
     'moui/overlay'
-], function($, _, tpl, mousewheel, overlay) {
+], function($, _, tpl, supports, mousewheel, overlay) {
 
     var NS = 'mouiImageView',
         TPL_VIEW =
@@ -70,8 +71,13 @@ define('moui/imageview', [
 
     var ImageView = _.construct(overlay.Overlay, function(){
         this.superConstructor.apply(this, arguments);
-        this.initMousewheel();
-        this.initDrag();
+        if (supports.touch) {
+            this._node.addClass('enable-touch');
+            this.initGesture();
+        } else {
+            this.initMousewheel();
+            this.initDrag();
+        }
     });
 
     _.mix(ImageView.prototype, {
@@ -90,6 +96,18 @@ define('moui/imageview', [
             this._image = this._imageMax.find('img');
             this._loading = this._node.find('.loading').eq(0);
             return this;
+        },
+
+        initGesture: function(){
+            var self = this,
+                last = false;
+            this._imageWrapper.on('gesturechange', function(e){
+                e = e.originalEvent || e;
+                if (last !== false) {
+                    self.zoomImage(e.scale - last > 0 && 2 || -2);
+                }
+                last = e.scale;
+            });
         },
 
         initMousewheel: function(){
@@ -220,13 +238,17 @@ define('moui/imageview', [
         },
 
         zoomImage: function(delta){
+            this.zoomImageTo(this._imageScale 
+                + delta * this._config.scaleStep);
+        },
+
+        zoomImageTo: function(scale){
             var max_scale = this._config.maxScale,
                 min_scale = this._config.minScale,
                 w = this._imageWidth,
                 h = this._imageHeight,
                 r = w / h;
-            w = (this._imageScale 
-                + delta * this._config.scaleStep) * w;
+            w = scale * w;
             if (w < this._imageWidth * min_scale 
                     || w > this._wrapperWidth * max_scale) {
                 return;
