@@ -8,8 +8,10 @@
   height:100%;
   z-index: $moui_z_overlay + $moui_z_step * 2;
   overflow:auto;
-  @include flex-direction(column);
-  @include justify-content(center);
+  @include flexbox((
+    flex-direction:column,
+    justify-content:center,
+  ));
 
   .wrapper {
     position:relative;
@@ -17,7 +19,7 @@
     width:350px;
     margin:0 auto 0 auto;
     margin-top:100px\9;
-    @include flex(0 0 auto);
+    @include flexbox((flex: 0 0 auto));
     opacity:0;
     @include transform(translateY(100px));
     @include transition(transform 0.3s, opacity 0.3s);
@@ -59,7 +61,7 @@
     text-align:center;
     height:$moui_bigbtn_h;
     border-top:1px solid $moui_border_color;
-    @include flex(0 1 auto);
+    @include flexbox((0 1 auto));
     opacity:0;
     @include transform(translateY(100px));
     @include transition(transform 0.3s, opacity 0.3s);
@@ -121,7 +123,7 @@
 
   &.rendered {
     display:block;
-    @include display-flex(flex);
+    @include flexbox((display:flex));
   }
 
   &.active {
