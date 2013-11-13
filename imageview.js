@@ -145,9 +145,15 @@ define('moui/imageview', [
                 e.preventDefault();
                 x = e.clientX;
                 y = e.clientY;
+                var start_x = x,
+                    start_y = y;
                 $(document).off('mousemove', when_drag)
                     .on('mousemove', when_drag)
-                    .once('mouseup', function(){
+                    .once('mouseup', function(e){
+                        if (Math.abs(e.clientX - start_x) < 10
+                               || Math.abs(e.clientY - start_y) < 10) {
+                            self.zoomToggle();
+                        }
                         $(document).off('mousemove', when_drag);
                     });
                 function when_drag(e){
@@ -233,8 +239,17 @@ define('moui/imageview', [
         },
 
         zoomReset: function(){
+            this._lastScale = this._imageScale;
             this._changeImageScale(1);
             this.dragReset();
+        },
+
+        zoomToggle: function(){
+            if (this._imageScale !== 1) {
+                this.zoomReset();
+            } else if (this._lastScale) {
+                this.zoomImageTo(this._lastScale);
+            }
         },
 
         zoomImage: function(delta){

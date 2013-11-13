@@ -1,15 +1,8 @@
 
-define([], function(){
-
-    var SUPPORT_TOUCH = false;
-
-    try {
-        document.createEvent("TouchEvent");  
-        SUPPORT_TOUCH = true;
-    } catch (e) {}
+define(["mo/browsers"], function(browsers){
 
     var exports = {
-        touch: SUPPORT_TOUCH,
+        touch: browsers.isTouch,
         overflowScroll: "webkitOverflowScrolling" in document.body.style
     };
 
