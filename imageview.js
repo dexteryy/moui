@@ -18,6 +18,7 @@ define('moui/imageview', [
 ], function($, _, tpl, supports, mousewheel, overlay) {
 
     var NS = 'mouiImageView',
+        BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAAAICVAEAOw==',
         TPL_VIEW =
            '<div id="{{id}}" class="{{cname}}">\
                 <div class="shd"></div>\
@@ -37,7 +38,7 @@ define('moui/imageview', [
                     </header>\
                     <article>\
                         <div class="max">\
-                            <img>\
+                            <img src="' + BLANK_IMG + '">\
                             <div class="mask"></div>\
                         </div>\
                     </article>\
@@ -138,7 +139,7 @@ define('moui/imageview', [
             handler.on('mousedown', function(e){
                 var which = e.button;
                 if (!self._config.allowDrag
-                        || which > 0 && which !== 0
+                        || which > 0 && which !== 1
                         || which < 0 && which !== -1) {
                     return;
                 }
@@ -325,7 +326,7 @@ define('moui/imageview', [
             if (!url) {
                 return;
             }
-            this._image.attr('src', '');
+            this._image.attr('src', BLANK_IMG);
             this._loading.show();
             this._imagesOffset = offset;
             if (offset <= 0) {
@@ -350,7 +351,6 @@ define('moui/imageview', [
                         setTimeout(show_pic, 200);
                     } else {
                         self._loading.hide();
-                        self._image.addClass('ready');
                     }
                 };
                 show_pic();
@@ -380,7 +380,6 @@ define('moui/imageview', [
         },
 
         applyClose: function(){
-            this._image.removeClass('ready');
             return this.superMethod('applyClose', arguments);
         }
 

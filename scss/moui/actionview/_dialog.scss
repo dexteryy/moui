@@ -22,7 +22,8 @@
     @include flexbox((flex: 0 0 auto));
     opacity:0;
     @include transform(translateY(100px));
-    @include transition(transform 0.3s, opacity 0.3s);
+    @include transition-property(transform, opacity);
+    @include transition-duration(0.3s, 0.3s);
 
     .content {
       overflow:hidden;
@@ -64,7 +65,8 @@
     @include flexbox((0 1 auto));
     opacity:0;
     @include transform(translateY(100px));
-    @include transition(transform 0.3s, opacity 0.3s);
+    @include transition-property(transform, opacity);
+    @include transition-duration(0.3s, 0.3s);
 
     .cancel,
     .confirm {

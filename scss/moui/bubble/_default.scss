@@ -5,10 +5,9 @@
   position:absolute;
   z-index:100;
   @include transform(scale(0));
-  @include transition(
-    transform 0.4s ceaser('easeOutBack'),
-    opacity 0.4s
-  );
+  @include transition-property(transform, opacity);
+  @include transition-duration(0.4s, 0.4s);
+  @include transition-timing-function(ceaser($easeOutBack), ease-in-out);
 
   .moui-content {
     display:inline-block;

@@ -18,7 +18,9 @@
     position:relative;
     opacity:0;
     @include transform(translateY(50%));
-    @include transition(transform 0.3s 0.1s, opacity 0.2s 0.1s);
+    @include transition-property(transform, opacity);
+    @include transition-duration(0.3s, 0.2s);
+    @include transition-delay(0.1s, 0.1s);
 
     .content {
       padding:$_morespace 0 $_morespace 0;
