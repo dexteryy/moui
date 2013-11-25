@@ -19,6 +19,7 @@ define('moui/imageview', [
 
     var NS = 'mouiImageView',
         BLANK_IMG = 'data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAAAICVAEAOw==',
+        TPL_IMG = '<img src="' + BLANK_IMG + '"><div class="mask"></div>',
         TPL_VIEW =
            '<div id="{{id}}" class="{{cname}}">\
                 <div class="shd"></div>\
@@ -29,6 +30,7 @@ define('moui/imageview', [
                             <span class="btn bigger"></span>\
                             <span class="btn reset"></span>\
                             <span class="btn smaller"></span>\
+                            <span class="scale-status"></span>\
                         </span>\
                         <span class="group pager">\
                             <span class="btn prev"></span>\
@@ -36,12 +38,7 @@ define('moui/imageview', [
                         </span>\
                         <h1></h1>\
                     </header>\
-                    <article>\
-                        <div class="max">\
-                            <img src="' + BLANK_IMG + '">\
-                            <div class="mask"></div>\
-                        </div>\
-                    </article>\
+                    <article>' + TPL_IMG + '</article>\
                     <div class="loading"></div>\
                     <footer></footer>\
                 </div>\
@@ -49,6 +46,7 @@ define('moui/imageview', [
 
         _piclib = {},
         _img_loader_tm,
+        _scale_timer,
 
         default_config = {
             className: 'moui-imageview',
@@ -58,6 +56,7 @@ define('moui/imageview', [
             maxScale: 3,
             minScale: 0.5,
             scaleStep: 0.05,
+            initialScroll: 'topleft',
             allowDrag: true,
             allowWheel: true,
             allowSave: true,
@@ -92,18 +91,25 @@ define('moui/imageview', [
             this._wrapper = this._node.find('.wrapper').eq(0);
             this._content = this._node.find('footer').eq(-1);
             this._imageWrapper = this._node.find('article').eq(0);
-            this._imageMax = this._imageWrapper.find('.max');
-            this._imageMask = this._imageMax.find('.mask');
-            this._image = this._imageMax.find('img');
+            this._imageMask = this._imageWrapper.find('.mask');
+            this._image = this._imageWrapper.find('img');
             this._loading = this._node.find('.loading').eq(0);
+            this._scaleStatus = this._header.find('.scale-status').eq(0);
             return this;
         },
 
         initGesture: function(){
             var self = this,
+                tm = +new Date(),
                 last = false;
             this._imageWrapper.on('gesturechange', function(e){
+                clearTimeout(_scale_timer);
                 e = e.originalEvent || e;
+                var now = +new Date();
+                if (now - tm < 50) {
+                    return;
+                }
+                tm = now;
                 if (last !== false) {
                     self.zoomImage(e.scale - last > 0 && 2 || -2);
                 }
@@ -151,9 +157,9 @@ define('moui/imageview', [
                 $(document).off('mousemove', when_drag)
                     .on('mousemove', when_drag)
                     .once('mouseup', function(e){
-                        if (Math.abs(e.clientX - start_x) < 10
-                               || Math.abs(e.clientY - start_y) < 10) {
-                            self.zoomToggle();
+                        if (Math.abs(e.clientX - start_x) > 10
+                                    || Math.abs(e.clientY - start_y) > 10) {
+                            self.event.fire('dragend', [e]);
                         }
                         $(document).off('mousemove', when_drag);
                     });
@@ -224,11 +230,17 @@ define('moui/imageview', [
         },
 
         dragReset: function(w, h){
-            var max_scale = this._config.maxScale;
-            w = w || this._wrapper.width();
-            h = h || this._wrapper.height();
-            this._imageWrapper[0].scrollLeft = (w * max_scale - w) / 2;
-            this._imageWrapper[0].scrollTop = (h * max_scale - h) / 2;
+            var x = 0,
+                y = 0;
+            if (this._config.initialScroll === 'center') {
+                var max_scale = this._config.maxScale;
+                w = w || this._wrapper.width();
+                h = h || this._wrapper.height();
+                x = (w * max_scale - w) / 2;
+                y = (h * max_scale - h) / 2;
+            }
+            this._imageWrapper[0].scrollLeft = x;
+            this._imageWrapper[0].scrollTop = y;
         },
 
         zoomIn: function(n){
@@ -242,7 +254,6 @@ define('moui/imageview', [
         zoomReset: function(){
             this._lastScale = this._imageScale;
             this._changeImageScale(1);
-            this.dragReset();
         },
 
         zoomToggle: function(){
@@ -277,22 +288,65 @@ define('moui/imageview', [
             this._changeImageScale(w / this._imageWidth);
         },
 
-        _changeImageScale: function(scale){
-            var max_scale = this._config.maxScale,
+        _changeImageScale: function(scale, opt){
+            opt = opt || {};
+            var wrapper = this._imageWrapper[0],
                 w = scale * this._imageWidth,
-                h = w / (this._imageWidth / this._imageHeight);
+                h = w / (this._imageWidth / this._imageHeight),
+                l = (this._wrapperWidth - w) / 2,
+                t = (this._wrapperHeight - h) / 2;
             this._imageScale = scale;
+            this._scaleStatus.html(Math.round(scale * 100) + '%');
+            if (opt.autoTop
+                    /* || supports.touch*/) {
+                if (l < 0) {
+                    l = 0;
+                }
+                if (t < 0) {
+                    t = 0;
+                }
+            }
             var values = {
                 width: w,
-                left: (this._wrapperWidth * max_scale - w) / 2,
-                top: (this._wrapperHeight * max_scale - h) / 2
+                left: l,
+                top: t
             };
-            this._image.css(values);
-            if (!this._config.allowSave) {
-                this._imageMask.css(_.mix(values, {
-                    height: h
-                }));
+            if (!opt.autoTop
+                    /* && !supports.touch*/) {
+                if (l < 0) {
+                    values.left = l + wrapper.scrollLeft;
+                }
+                if (t < 0) {
+                    values.top = t + wrapper.scrollTop;
+                }
             }
+            this._image.css(values);
+            this._imageMask.css(_.mix({
+                height: h
+            }, values));
+            if (opt.autoTop
+                    /* || supports.touch*/) {
+                return;
+            }
+            clearTimeout(_scale_timer);
+            _scale_timer = setTimeout(function(){
+                this._image.addClass('disable-effect');
+                if (l < 0) {
+                    this._image.css('left', 0);
+                    this._imageMask.css('left', 0);
+                    wrapper.scrollLeft = -l;
+                } else {
+                    wrapper.scrollLeft = 0;
+                }
+                if (t < 0) {
+                    this._image.css('top', 0);
+                    this._imageMask.css('top', 0);
+                    wrapper.scrollTop = -t;
+                } else {
+                    wrapper.scrollTop = 0;
+                }
+                this._image.removeClass('disable-effect');
+            }.bind(this), 500);
         },
 
         updateImageSize: function(w, h){
@@ -302,19 +356,16 @@ define('moui/imageview', [
                     || w <= 0 || h <= 0) {
                 return false;
             }
-            var max_scale = this._config.maxScale,
-                win_w = this._wrapper.width(),
+            var win_w = this._wrapper.width(),
                 win_h = this._wrapper.height(),
                 size = adapted_size(w, h, win_w, win_h);
-            this._imageMax.css({
-                width: win_w * max_scale,
-                height: win_h * max_scale
-            });
             this._imageWidth = size[0];
             this._imageHeight = size[1];
             this._wrapperWidth = win_w;
             this._wrapperHeight = win_h;
-            this._changeImageScale(1);
+            this._changeImageScale(1, {
+                autoTop: true
+            });
             this.dragReset(win_w, win_h);
             return true;
         },
@@ -326,6 +377,7 @@ define('moui/imageview', [
             if (!url) {
                 return;
             }
+            var scale_cache = this._imageScale;
             this._image.attr('src', BLANK_IMG);
             this._loading.show();
             this._imagesOffset = offset;
@@ -351,6 +403,12 @@ define('moui/imageview', [
                         setTimeout(show_pic, 200);
                     } else {
                         self._loading.hide();
+                        self._image.addClass('ready');
+                        if (scale_cache) {
+                            self._changeImageScale(scale_cache, {
+                                autoTop: true
+                            });
+                        }
                     }
                 };
                 show_pic();
@@ -380,6 +438,7 @@ define('moui/imageview', [
         },
 
         applyClose: function(){
+            this._image.removeClass('ready');
             return this.superMethod('applyClose', arguments);
         }
 
