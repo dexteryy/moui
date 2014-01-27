@@ -132,7 +132,7 @@ define('moui/control', [
             if (field[0].nodeName === 'A') {
                 args.unshift('href');
                 re = field.attr.apply(field, args);
-                return re === field ? field.attr('href') : re;
+                return re === field ? field[0].href : re;
             } else {
                 re = field.val.apply(field, args);
                 return re === field ? field.val() : re;

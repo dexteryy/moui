@@ -5,17 +5,16 @@
   display:none;
   position:fixed;
   top:0;
+  bottom:0;
   left:0;
-  width:100%;
-  height:100%;
+  right:0;
   z-index: $moui_z_overlay + $moui_z_step * 2;
   @include user-select(none);
 
   .wrapper {
     height:100%;
-    overflow-y:scroll;
+    overflow-y:auto;
     -webkit-overflow-scrolling: touch;
-    position:relative;
     opacity:0;
     @include transform(translateY(50%));
     @include transition-property(transform, opacity);
@@ -23,15 +22,14 @@
     @include transition-delay(0.1s, 0.1s);
 
     .content {
-      padding:$_morespace 0 $_morespace 0;
-      overflow:hidden;
-      position:relative;
+      min-height:100%;
 
       & > header {
         padding:0 $_morespace;
+        margin-bottom:$_morespace;
 
         h1 {
-          padding:0 0 10px 0;
+          padding:$_morespace 0 10px 0;
           font-size:$moui_hdtitle_size;
           height:$moui_hdtitle_size;
           line-height:$moui_hdtitle_size;
@@ -42,6 +40,7 @@
           &:empty {
             border:none;
             padding:0;
+            height:0;
           }
 
         }
@@ -50,15 +49,12 @@
 
       & > .desc {
         color:#fff;
-        padding:$_morespace;
+        padding:0 $_morespace;
         font-size:$moui_maintitle_size;
       }
 
       & > article {
-        position:absolute;
-        bottom:$moui_bigbtn_h + 2*$_space + 2*$_morespace + $_morespace;
-        left:$_morespace;
-        right:$_morespace;
+        margin:$_morespace;
         background:#343434;
         border: solid 1px #141414;
         padding:0 18px;
@@ -79,22 +75,16 @@
 
     }
 
-    body.no-cardscroll & {
-      -webkit-overflow-scrolling: auto;
-      //overflow-y:visible;
-      //height:auto;
-    }
-
   }
 
   & > footer {
     position:fixed;
     bottom:0;
     left:0;
+    right:0;
     border-top:1px solid #000;
     background:rgba(13,13,13,0.95);
     @include box-shadow(inset 0px 1px 0px #212121);
-    width:100%;
     height:$moui_bigbtn_h + 2*$_space;
     //padding:$_space 0;
     overflow:hidden;
@@ -128,6 +118,8 @@
 
       &:active {
         @include box-shadow(none);
+        border-color:#101010;
+        background:#343434;
       }
 
     }
@@ -150,11 +142,11 @@
   }
 
   .shd {
-    position:fixed;
+    position:absolute;
     top:0;
+    bottom:0;
     left:0;
-    width:100%;
-    height:100%;
+    right:0;
     background:rgba(13,13,13,0.95);
     opacity:0;
     @include transition(opacity 0.5s);
