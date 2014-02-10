@@ -91,10 +91,9 @@ define('moui/modalview', [
         },
 
         setContent: function(html){
+            this.event.fire('willUpdateContent', [this]);
             this.superMethod('setContent', [html]);
-            if (html) {
-                this.event.fire('contentchange', [this]);
-            }
+            this.event.fire('updateContent', [this]);
             return this;
         },
 
@@ -159,6 +158,10 @@ define('moui/modalview', [
             this._clearIframeContent();
             this._contentWrapper[0].scrollTop = 0;
             return this.superMethod('applyClose', arguments);
+        },
+
+        beforeClose: function(){
+            this.setContent('');
         }
 
     });

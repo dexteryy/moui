@@ -171,10 +171,12 @@ define('moui/overlay', [
         applyClose: function() {
             this.isOpened = false;
             this.hideLoading();
-            this._content.empty();
+            this.beforeClose();
             this._node.removeClass('rendered');
             this.event.fire('close', [this]);
         },
+
+        beforeClose: function(){},
 
         destroy: function() {
             this._node.remove();
