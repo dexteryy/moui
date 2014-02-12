@@ -3,15 +3,16 @@
   display:none;
   position:absolute;
   top:0;
-  bottom:0;
   left:0;
   right:0;
+  bottom:0;
   z-index: $moui_z_overlay + $moui_z_step;
   @include user-select(none);
 
   .wrapper {
-    @include transform(translateY(100%));
+    position:relative;
     @include transition(transform 0.4s);
+    @include transform(translateY(100%));
 
     & > header {
       height: $moui_nav_h;
@@ -38,7 +39,6 @@
 
       button.confirm, button.cancel {
         @extend %moui-button;
-        width:55px;
         margin:$_padding 0 0 $_padding;
         float:left;
       }
@@ -54,7 +54,7 @@
       background:$moui_bg_color;
 
       & > .content {
-        padding:$moui_nav_h 0 0 0;
+        min-height:2000px;
       }
 
     }
@@ -67,6 +67,9 @@
     bottom:0;
     left:0;
     right:0;
+    background:#333;
+    opacity:0;
+    @include transition(opacity 0.4s);
   }
 
   &.rendered {
@@ -75,8 +78,21 @@
 
   &.active {
 
+    .shd {
+      opacity:1;
+    }
+
     .wrapper {
-      @include transform(translateY(0));
+      @include transform(none);
+
+      & > header {
+        position:fixed;
+      }
+
+      & > article > .content {
+        min-height:inherit;
+      }
+
     }
 
   }
