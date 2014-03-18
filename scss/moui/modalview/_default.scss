@@ -12,7 +12,7 @@
   .wrapper {
     position:relative;
     @include transition(transform 0.4s);
-    @include transform(translateY(100%));
+    @include transform(translateY(200%));
 
     & > header {
       height: $moui_nav_h;
@@ -67,9 +67,8 @@
     bottom:0;
     left:0;
     right:0;
-    background:#333;
-    opacity:0;
-    @include transition(opacity 0.4s);
+    background:rgba(51,51,51,0);
+    @include transition(background-color 0.4s);
   }
 
   &.rendered {
@@ -79,7 +78,7 @@
   &.active {
 
     .shd {
-      opacity:1;
+      background:rgba(51,51,51,1);
     }
 
     .wrapper {
