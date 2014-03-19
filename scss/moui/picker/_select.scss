@@ -23,6 +23,12 @@
     font-weight:normal;
   }
 
+  &[data-multiselect="true"] {
+    button.enabled {
+      display:none;
+    }
+  }
+
   &[data-fluid="true"] {
     width:auto;
   }
