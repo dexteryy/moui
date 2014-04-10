@@ -147,8 +147,9 @@
     bottom:0;
     left:0;
     right:0;
-    background:rgba(13,13,13,0);
-    @include transition(background-color 0.5s);
+    background:#0d0d0d;
+    opacity:0;
+    @include transition(opacity 0.5s);
   }
 
   &.confirm-kind {
@@ -166,7 +167,7 @@
   &.active {
 
     .shd {
-      background:rgba(13,13,13,0.95);
+      opacity:1;
     }
 
     .wrapper {
